@@ -10,7 +10,7 @@ from scrapy import log
 
 class tbmmSpider(Spider):
     name = "tbmm"
-    download_delay = 1
+    download_delay = 0.25
     allow_domians = ["mm.taobao.com"]
 
     custom_settings = {

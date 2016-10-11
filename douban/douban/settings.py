@@ -18,13 +18,15 @@ ITEM_PIPELINES = {'douban.pipelines.MongodbPipeline': 300}
 
 MONGODB_HOST = '127.0.0.1'
 MONGODB_DBNAME = 'tbmm'
-MONGODB_DOCNAME = 'DOUBAN'
+MONGODB_DOCNAME = 'DOUBANBOOk'
 MONGODB_PORT = 27017
 
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
     'douban.HeaderMidWare.ProcessHeaderMidware': 543,
 }
+
+LOG_LEVEL = 'INFO'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -34,7 +36,7 @@ DOWNLOADER_MIDDLEWARES = {
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 100
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay

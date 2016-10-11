@@ -21,12 +21,12 @@ class ProcessHeaderMidware(object):
 
     def process_request(self, request, spider):
         ua = random.choice(self.USER_AGENT_LIST)
-        spider.logger.info(msg='now entring download midware.')
+#        spider.logger.info(msg='now entring download midware.')
         if ua:
             request.headers['User-Agent'] = ua
-            spider.logger.info(
-                'User-Agent is: {} {}'.format(request.headers.get('User-Agent'), request)
-            )
+ #           spider.logger.info(
+  #              'User-Agent is: {} {}'.format(request.headers.get('User-Agent'), request)
+   #         )
 
     USER_AGENT_LIST = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
