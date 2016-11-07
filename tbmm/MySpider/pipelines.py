@@ -45,7 +45,7 @@ class MysqlPipeline(object):
 
 
         sql ="INSERT INTO tb_model(user_id,avatar_url,city,real_name,total_fan_num,total_favor_num,weight,height)\
-                      VALUES('%s','%s','%s','%s','%s','%s','%s','%s')" % (item['userId'], item['avatarUrl'], item['city'], \
+                      VALUES('%s','%s','%s','%s','%s','%s','%s','%s')", (item['userId'], item['avatarUrl'], item['city'],
                       item['realName'], item['totalFanNum'], item['totalFavorNum'], item['weight'], item['height'])
         try:
                 self.cursor.execute(sql)

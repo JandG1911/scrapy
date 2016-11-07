@@ -23,7 +23,7 @@ from scrapy import log
 
 class Myspider(Spider):
     name = 'douban'
-    download_delay = 2
+    download_delay = 1.25
     allowed_domains = ['book.douban.com']
     start_urls = [
         'https://book.douban.com/tag/'
@@ -42,8 +42,9 @@ class Myspider(Spider):
             item['score'] = sel.xpath('div[2]/span[2]/text()').extract()
             item['people'] = sel.xpath('div[2]/span[3]/text()').re('(\d+)人')
             item['pub'] = sel.xpath('div[@class="pub"]/text()').extract()
-            item['price'] = sel.xpath('div[3]/div[2]/span/a/text()').re('(\d+\.\d+)')
+            # item['price'] = sel.xpath('div[3]/div[2]/span/a/text()').re('(\d+\.\d+)')
             item['content'] = sel.xpath('p/text()').extract()
+            item['tag'] = response.xpath('//div[@id="content"]/h1/text()').re(': (.*)$')
             yield item
 
         next = response.xpath('//span[@class="next"]/a/@href').extract()

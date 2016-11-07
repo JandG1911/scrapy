@@ -25,17 +25,16 @@ class MongodbPipeline(object):
     def process_item(self, item, spider):
         pub = item['pub'][0].strip().split('/')
         title = item['title'][0].strip()
-        author = pub[0]
-        hashed = self.hashed(title, author)
+        # author = pub[0]
+        tag = item['tag'][0]
+        hashed = self.hashed(title, tag)
         if hashed not in self.hash:
-            if len(pub) > 3:
-                self.hash.append(hashed)
-                score = float(item['score'][0]) if item['score'] else ''
-                people = int(item['people'][0]) if item['people'] else ''
-                content = item['content'][0] if item['content'] else ''
-                press, date = self.press_date(pub)
-                price = self.price(item['price'], pub)
-                perter = self.interperter(pub)
+            self.hash.append(hashed)
+            author, press = self.desc(pub)
+            score = float(item['score'][0]) if item['score'] else ''
+            people = int(item['people'][0]) if item['people'] else ''
+            content = item['content'][0] if item['content'] else ''
+            try:
                 items = {
                     'hash': hashed,
                     'title': title,
@@ -43,49 +42,34 @@ class MongodbPipeline(object):
                     'content': content,
                     'score': score,
                     'people': people,
-                    'interperter': perter,
                     'press': press,
-                    'date': date,
-                    'price': price,
+                    'tag': tag,
                 }
                 self.post.insert(items)
                 return item
-            else:
-                score = float(item['score'][0]) if item['score'] else ''
-                people = int(item['people'][0]) if item['people'] else ''
-                content = item['content'][0] if item['content'] else ''
+            except:
                 items = {
                     'title': title,
                     'content': content,
                     'score': score,
                     'people': people,
+                    'tag': tag,
                 }
-                self.error.inserts(items)
+                self.error.insert(items)
                 return item
 
-    def price(self, item, pub):
-        if ('-'or '/' or '年') in pub[-1]:
-            return ''
-        elif item:
-            return item[0]
-        else:
-            return pub[-1]
-
-    def interperter(self, pub):
+    def desc(self, pub):
         if len(pub) > 4:
-            return pub[1]
+            author = "/".join(pub[:-3])
+            press = "/".join(pub[-3:])
         else:
-            return ''
-
-    def press_date(self, pub):
-        if ('-'or '/' or '年') not in pub[-1]:
-            press = pub[-3]
-            date = pub[-2].replace('年', '-').replace('月', '')
-            return press, date
-        else:
-            press = pub[-2]
-            date = pub[-1].replace('年', '-').replace('月', '')
-            return press, date
+            if ('-' or '/' or '年') in pub[-1]:
+                author = "/".join(pub[:-2])
+                press = "/".join(pub[-2:])
+            else:
+                author = pub[0]
+                press = "/".join(pub[-3:])
+        return author, press
 
     def hashed(self, title, author):
         m = hashlib.md5()

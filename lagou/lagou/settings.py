@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for douban project
+# Scrapy settings for lagou project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,35 +9,30 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'douban'
+BOT_NAME = 'lagou'
 
-SPIDER_MODULES = ['douban.spiders']
-NEWSPIDER_MODULE = 'douban.spiders'
+SPIDER_MODULES = ['lagou.spiders']
+NEWSPIDER_MODULE = 'lagou.spiders'
 
-ITEM_PIPELINES = {'douban.pipelines.MongodbPipeline': 300}
+ITEM_PIPELINES = {
+    'lagou.pipelines.LagouPipeline': 100,
+}
 
 MONGODB_HOST = '127.0.0.1'
-MONGODB_DBNAME = 'tbmm'
-MONGODB_DOCNAME = 'DOUBANBOOK'
 MONGODB_PORT = 27017
-
-DOWNLOADER_MIDDLEWARES = {
-    'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
-    'douban.HeaderMidWare.ProcessHeaderMidware': 543,
-    # 'douban.HeaderMidWare.ProxyMiddleware': 550,
-}
+MONGODB_DBNAME = 'LAGOU'
 
 LOG_LEVEL = 'INFO'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'douban (+http://www.yourdomain.com)'
+#USER_AGENT = 'lagou (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 100
+#CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -62,14 +57,15 @@ CONCURRENT_REQUESTS = 100
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'douban.middlewares.MyCustomSpiderMiddleware': 543,
+#    'lagou.middlewares.MyCustomSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'douban.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   # 'lagou.middlewares.MyCustomDownloaderMiddleware': 543,
+    'lagou.middlewares.ProcessHeaderMidware': 543,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -80,7 +76,7 @@ CONCURRENT_REQUESTS = 100
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'douban.pipelines.SomePipeline': 300,
+#    'lagou.pipelines.SomePipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -103,5 +99,3 @@ CONCURRENT_REQUESTS = 100
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-
-
